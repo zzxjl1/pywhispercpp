@@ -231,7 +231,7 @@ def get_version() -> str:
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pywhispercpp",
-    author="abdeladim-s",
+    author="absadiki",
     description="Python bindings for whisper.cpp",
     long_description=long_description,
     ext_modules=[CMakeExtension("_pywhispercpp")],
@@ -253,9 +253,9 @@ setup(
                             'pwcpp-recording=pywhispercpp.examples.recording:_main']
     },
     project_urls={
-        'Documentation': 'https://abdeladim-s.github.io/pywhispercpp/',
-        'Source': 'https://github.com/abdeladim-s/pywhispercpp',
-        'Tracker': 'https://github.com/abdeladim-s/pywhispercpp/issues',
+        'Documentation': 'https://absadiki.github.io/pywhispercpp/',
+        'Source': 'https://github.com/absadiki/pywhispercpp',
+        'Tracker': 'https://github.com/absadiki/pywhispercpp/issues',
     },
     install_requires=['numpy', "requests", "tqdm", "platformdirs"],
     extras_require={"examples": ["sounddevice", "webrtcvad"]},

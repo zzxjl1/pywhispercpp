@@ -20,7 +20,7 @@ import subprocess
 import os
 import tempfile
 
-__author__ = "abdeladim-s"
+__author__ = "absadiki"
 __copyright__ = "Copyright 2023, "
 __license__ = "MIT"
 __version__ = importlib.metadata.version('pywhispercpp')
