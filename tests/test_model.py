@@ -40,6 +40,10 @@ class TestModel(TestCase):
         audio_arr = self.model._load_audio(str(self.audio_file))
         return self.assertIsNotNone(audio_arr)
 
+    def test_auto_detect_language(self):
+        detected_language, probs = self.model.auto_detect_language(str(self.audio_file))
+        return self.assertIsInstance(detected_language, tuple) and self.assertEqual(detected_language[0], 'en')
+
 
 if __name__ == '__main__':
     unittest.main()
