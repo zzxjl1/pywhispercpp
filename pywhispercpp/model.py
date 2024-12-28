@@ -11,7 +11,7 @@ import shutil
 import sys
 from pathlib import Path
 from time import time
-from typing import Union, Callable, List, TextIO
+from typing import Union, Callable, List, TextIO, Tuple
 import _pywhispercpp as pw
 import numpy as np
 import pywhispercpp.utils as utils
@@ -203,7 +203,7 @@ class Model:
         return pw.whisper_print_system_info()
 
     @staticmethod
-    def available_languages() -> list:
+    def available_languages() -> list[str]:
         """
         Returns a list of supported language codes
 
@@ -301,6 +301,30 @@ class Model:
                 return wav_to_np(temp_file_path)
             finally:
                 os.remove(temp_file_path)
+
+    def auto_detect_language(self,  media: Union[str, np.ndarray], offset_ms: int = 0, n_threads: int = 4) -> Tuple[Tuple[str, np.float32], dict[str, np.float32]]:
+        """
+        Automatic language detection using whisper.cpp/whisper_pcm_to_mel and whisper.cpp/whisper_lang_auto_detect
+
+        :param media: Media file path or a numpy array
+        :param offset_ms: offset in milliseconds
+        :param n_threads: number of threads to use
+        :return: ((detected_language, probability), probabilities for all languages)
+        """
+        if type(media) is np.ndarray:
+            audio = media
+        else:
+            if not Path(media).exists():
+                raise FileNotFoundError(media)
+            audio = self._load_audio(media)
+
+        pw.whisper_pcm_to_mel(self._ctx, audio, len(audio), n_threads)
+        lang_max_id = self.lang_max_id()
+        probs = np.zeros(lang_max_id, dtype=np.float32)
+        auto_detect = pw.whisper_lang_auto_detect(self._ctx, offset_ms, n_threads, probs)
+        langs = self.available_languages()
+        lang_probs = {langs[i]: probs[i] for i in range(lang_max_id)}
+        return (langs[auto_detect], probs[auto_detect]), lang_probs
 
     def __del__(self):
         """
