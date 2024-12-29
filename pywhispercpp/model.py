@@ -151,7 +151,8 @@ class Model:
         for i in range(start, end):
             t0 = pw.whisper_full_get_segment_t0(ctx, i)
             t1 = pw.whisper_full_get_segment_t1(ctx, i)
-            text = pw.whisper_full_get_segment_text(ctx, i)
+            bytes = pw.whisper_full_get_segment_text(ctx, i)
+            text = bytes.decode('utf-8',errors='replace')
             res.append(Segment(t0, t1, text.strip()))
         return res
 
