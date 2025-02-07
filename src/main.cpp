@@ -1,7 +1,7 @@
 /**
  ********************************************************************************
  * @file    main.cpp
- * @author  [abdeladim-s](https://github.com/abdeladim-s)
+ * @author  [absadiki](https://github.com/absadiki)
  * @date    2023
  * @brief   Python bindings for [whisper.cpp](https://github.com/ggerganov/whisper.cpp) using Pybind11
  *
@@ -280,12 +280,26 @@ class WhisperFullParamsWrapper : public whisper_full_params {
     std::string initial_prompt_str;   
     std::string suppress_regex_str;      
 public:
+    py::function py_progress_callback;
     WhisperFullParamsWrapper(const whisper_full_params& params = whisper_full_params())
         : whisper_full_params(params),  
         initial_prompt_str(params.initial_prompt ? params.initial_prompt : ""),
         suppress_regex_str(params.suppress_regex ? params.suppress_regex : "") {
         initial_prompt = initial_prompt_str.empty() ? nullptr : initial_prompt_str.c_str();
         suppress_regex = suppress_regex_str.empty() ? nullptr : suppress_regex_str.c_str();
+        // progress callback
+        progress_callback_user_data = this;
+        progress_callback = [](struct whisper_context* ctx, struct whisper_state* state, int progress, void* user_data) {
+            auto* self = static_cast<WhisperFullParamsWrapper*>(user_data);
+            if(self && self->print_progress){
+                if (self->py_progress_callback) {
+                    self->py_progress_callback(progress);  // Call Python callback
+                }
+                else {
+                    fprintf(stderr, "Progress: %3d%%\n", progress);
+                } // Default message
+            }
+        } ;
     }
 
     WhisperFullParamsWrapper(const WhisperFullParamsWrapper& other)
@@ -557,6 +571,7 @@ PYBIND11_MODULE(_pywhispercpp, m) {
         .def_readwrite("single_segment", &WhisperFullParamsWrapper::single_segment)
         .def_readwrite("print_special", &WhisperFullParamsWrapper::print_special)
         .def_readwrite("print_progress", &WhisperFullParamsWrapper::print_progress)
+        .def_readwrite("progress_callback", &WhisperFullParamsWrapper::py_progress_callback)
         .def_readwrite("print_realtime", &WhisperFullParamsWrapper::print_realtime)
         .def_readwrite("print_timestamps", &WhisperFullParamsWrapper::print_timestamps)
         .def_readwrite("token_timestamps", &WhisperFullParamsWrapper::token_timestamps)
