@@ -166,7 +166,11 @@ class Model:
         for param in dir(self._params):
             if param.startswith('__'):
                 continue
-            res[param] = getattr(self._params, param)
+            try:
+                res[param] = getattr(self._params, param)
+            except Exception:
+                # ignore callback functions
+                continue
         return res
 
     @staticmethod
