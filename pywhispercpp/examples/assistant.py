@@ -16,7 +16,6 @@ import sounddevice as sd
 import pywhispercpp.constants as constants
 import webrtcvad
 import logging
-from pywhispercpp._logger import set_log_level
 from pywhispercpp.model import Model
 
 __version__ = importlib.metadata.version('pywhispercpp')
@@ -44,13 +43,13 @@ class Assistant:
     """
 
     def __init__(self,
+                 model_log_level: int = logging.INFO,
                  model='tiny',
                  input_device: int = None,
                  silence_threshold: int = 8,
                  q_threshold: int = 16,
                  block_duration: int = 30,
                  commands_callback: Callable[[str], None] = None,
-                 model_log_level: int = logging.INFO,
                  **model_params):
 
         """
@@ -77,7 +76,7 @@ class Assistant:
         self._silence_counter = 0
 
         self.pwccp_model = Model(model,
-                                 log_level=model_log_level,
+                                 model_log_level=model_log_level,
                                  print_realtime=False,
                                  print_progress=False,
                                  print_timestamps=False,
@@ -123,7 +122,7 @@ class Assistant:
 
     def _new_segment_callback(self, seg):
         if self.commands_callback:
-            self.commands_callback(seg[0].text)
+            self.commands_callback(seg.text)
 
     def start(self) -> None:
         """
@@ -158,7 +157,7 @@ def _main():
                         help=f'Id of The input device (aka microphone)\n'
                              f'available devices {Assistant.available_devices()}')
     parser.add_argument('-st', '--silence_threshold', default=16, type=int,
-                        help=f"he duration of silence after which the inference will be running, default to %(default)s")
+                        help=f"The duration of silence after which the inference will be running, default to %(default)s")
     parser.add_argument('-bd', '--block_duration', default=30,
                         help=f"minimum time audio updates in ms, default to %(default)s")
 
