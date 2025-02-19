@@ -166,7 +166,11 @@ class Model:
         for param in dir(self._params):
             if param.startswith('__'):
                 continue
-            res[param] = getattr(self._params, param)
+            try:
+                res[param] = getattr(self._params, param)
+            except Exception:
+                # ignore callback functions
+                continue
         return res
 
     @staticmethod
@@ -224,7 +228,6 @@ class Model:
         logger.info("Initializing the model ...")
         with utils.redirect_stderr(to=self.redirect_whispercpp_logs_to):
             self._ctx = pw.whisper_init_from_file(self.model_path)
-            self._params = pw.whisper_full_default_params(pw.whisper_sampling_strategy.WHISPER_SAMPLING_GREEDY)
 
     def _set_params(self, kwargs: dict) -> None:
         """
@@ -238,11 +241,12 @@ class Model:
     def _transcribe(self, audio: np.ndarray, n_processors: int = None):
         """
         Private method to call the whisper.cpp/whisper_full function
-
+    
         :param audio: numpy array of audio data
         :param n_processors: if not None, it will run whisper.cpp/whisper_full_parallel with n_processors
         :return:
         """
+
         if n_processors:
             pw.whisper_full_parallel(self._ctx, self._params, audio, audio.size, n_processors)
         else:
