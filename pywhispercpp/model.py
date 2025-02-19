@@ -228,8 +228,6 @@ class Model:
         logger.info("Initializing the model ...")
         with utils.redirect_stderr(to=self.redirect_whispercpp_logs_to):
             self._ctx = pw.whisper_init_from_file(self.model_path)
-            # Don't set the params to the default ones here, as it will overwrite the user's params
-            # self._params = pw.whisper_full_default_params(pw.whisper_sampling_strategy.WHISPER_SAMPLING_GREEDY)
 
     def _set_params(self, kwargs: dict) -> None:
         """
