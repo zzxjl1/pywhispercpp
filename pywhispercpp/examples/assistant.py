@@ -16,7 +16,6 @@ import sounddevice as sd
 import pywhispercpp.constants as constants
 import webrtcvad
 import logging
-from pywhispercpp._logger import set_log_level
 from pywhispercpp.model import Model
 
 __version__ = importlib.metadata.version('pywhispercpp')
@@ -50,7 +49,6 @@ class Assistant:
                  q_threshold: int = 16,
                  block_duration: int = 30,
                  commands_callback: Callable[[str], None] = None,
-                 model_log_level: int = logging.INFO,
                  **model_params):
 
         """
@@ -77,7 +75,6 @@ class Assistant:
         self._silence_counter = 0
 
         self.pwccp_model = Model(model,
-                                 log_level=model_log_level,
                                  print_realtime=False,
                                  print_progress=False,
                                  print_timestamps=False,
