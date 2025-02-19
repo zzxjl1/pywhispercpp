@@ -43,7 +43,6 @@ class Assistant:
     """
 
     def __init__(self,
-                 model_log_level: int = logging.INFO,
                  model='tiny',
                  input_device: int = None,
                  silence_threshold: int = 8,
@@ -76,7 +75,6 @@ class Assistant:
         self._silence_counter = 0
 
         self.pwccp_model = Model(model,
-                                 model_log_level=model_log_level,
                                  print_realtime=False,
                                  print_progress=False,
                                  print_timestamps=False,
@@ -122,7 +120,7 @@ class Assistant:
 
     def _new_segment_callback(self, seg):
         if self.commands_callback:
-            self.commands_callback(seg.text)
+            self.commands_callback(seg[0].text)
 
     def start(self) -> None:
         """
@@ -157,7 +155,7 @@ def _main():
                         help=f'Id of The input device (aka microphone)\n'
                              f'available devices {Assistant.available_devices()}')
     parser.add_argument('-st', '--silence_threshold', default=16, type=int,
-                        help=f"The duration of silence after which the inference will be running, default to %(default)s")
+                        help=f"he duration of silence after which the inference will be running, default to %(default)s")
     parser.add_argument('-bd', '--block_duration', default=30,
                         help=f"minimum time audio updates in ms, default to %(default)s")
 
