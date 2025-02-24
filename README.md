@@ -77,6 +77,14 @@ Install the package with `GGML_VULKAN=1`:
 GGML_VULKAN=1 pip install git+https://github.com/absadiki/pywhispercpp
 ```
 
+### OpenBLAS support
+
+If OpenBLAS is installed, you can use `GGML_BLAS=1`. The other flags ensure you're installing fresh with the correct flags, and printing output for sanity checking.
+```shell
+GGML_BLAS=1 pip install git+https://github.com/absadiki/pywhispercpp --no-cache --force-reinstall -v
+```
+
+
 ** __Feel free to update this list and submit a PR if you tested the package on other backends.__
 
 
