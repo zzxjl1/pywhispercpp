@@ -84,6 +84,18 @@ If OpenBLAS is installed, you can use `GGML_BLAS=1`. The other flags ensure you'
 GGML_BLAS=1 pip install git+https://github.com/absadiki/pywhispercpp --no-cache --force-reinstall -v
 ```
 
+### OpenVINO support
+
+Follow the the steps to download correct OpenVINO package (https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#openvino-support).
+
+Then init the OpenVINO environment and build.
+```
+source ~/l_openvino_toolkit_ubuntu22_2023.0.0.10926.b4452d56304_x86_64/setupvars.sh 
+WHISPER_OPENVINO=1 uv add git+https://github.com/absadiki/pywhispercpp --no-cache --force-reinstall
+```
+
+Note that the toolkitfor Ubuntu22 works on Ubuntu24
+
 
 ** __Feel free to update this list and submit a PR if you tested the package on other backends.__
 
