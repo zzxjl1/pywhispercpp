@@ -120,7 +120,7 @@ class Assistant:
 
     def _new_segment_callback(self, seg):
         if self.commands_callback:
-            self.commands_callback(seg[0].text)
+            self.commands_callback(seg.text)
 
     def start(self) -> None:
         """
