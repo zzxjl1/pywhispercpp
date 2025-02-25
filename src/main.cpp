@@ -536,7 +536,6 @@ PYBIND11_MODULE(_pywhispercpp, m) {
                 << "language=" << (self.language ? self.language : "None") << ", "
                 << "detect_language=" << (self.detect_language ? "True" : "False") << ", "
                 << "suppress_blank=" << (self.suppress_blank ? "True" : "False") << ", "
-                << "suppress_non_speech_tokens=" << (self.suppress_non_speech_tokens ? "True" : "False") << ", "
                 << "temperature=" << self.temperature << ", "
                 << "max_initial_ts=" << self.max_initial_ts << ", "
                 << "length_penalty=" << self.length_penalty << ", "
@@ -611,7 +610,6 @@ PYBIND11_MODULE(_pywhispercpp, m) {
                 }
             })
         .def_readwrite("suppress_blank", &WhisperFullParamsWrapper::suppress_blank)
-        .def_readwrite("suppress_non_speech_tokens", &WhisperFullParamsWrapper::suppress_non_speech_tokens)
         .def_readwrite("temperature", &WhisperFullParamsWrapper::temperature)
         .def_readwrite("max_initial_ts", &WhisperFullParamsWrapper::max_initial_ts)
         .def_readwrite("length_penalty", &WhisperFullParamsWrapper::length_penalty)
