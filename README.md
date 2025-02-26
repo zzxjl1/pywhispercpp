@@ -94,7 +94,7 @@ source ~/l_openvino_toolkit_ubuntu22_2023.0.0.10926.b4452d56304_x86_64/setupvars
 WHISPER_OPENVINO=1 uv add git+https://github.com/absadiki/pywhispercpp --no-cache --force-reinstall
 ```
 
-Note that the toolkitfor Ubuntu22 works on Ubuntu24
+Note that the toolkit for Ubuntu22 works on Ubuntu24
 
 
 ** __Feel free to update this list and submit a PR if you tested the package on other backends.__
