@@ -91,7 +91,7 @@ Follow the the steps to download correct OpenVINO package (https://github.com/gg
 Then init the OpenVINO environment and build.
 ```
 source ~/l_openvino_toolkit_ubuntu22_2023.0.0.10926.b4452d56304_x86_64/setupvars.sh 
-WHISPER_OPENVINO=1 uv add git+https://github.com/absadiki/pywhispercpp --no-cache --force-reinstall
+WHISPER_OPENVINO=1 pip install git+https://github.com/absadiki/pywhispercpp --no-cache --force-reinstall
 ```
 
 Note that the toolkit for Ubuntu22 works on Ubuntu24
