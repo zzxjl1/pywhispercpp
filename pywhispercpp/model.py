@@ -19,6 +19,7 @@ import pywhispercpp.constants as constants
 import subprocess
 import os
 import tempfile
+import wave
 
 __author__ = "absadiki"
 __copyright__ = "Copyright 2023, "
@@ -281,12 +282,32 @@ class Model:
         """
 
         def wav_to_np(file_path):
-            with open(file_path, 'rb') as f:
-                f.read(44)
-                raw_data = f.read()
-                samples = np.frombuffer(raw_data, dtype=np.int16)
-            audio_array = samples.astype(np.float32) / np.iinfo(np.int16).max
-            return audio_array
+            with wave.open(file_path, 'rb') as wf:
+                num_channels = wf.getnchannels()
+                sample_width = wf.getsampwidth()
+                sample_rate = wf.getframerate()
+                num_frames = wf.getnframes()
+
+                if num_channels not in (1, 2):
+                    raise Exception(f"WAV file must be mono or stereo")
+
+                if sample_rate != pw.WHISPER_SAMPLE_RATE:
+                    raise Exception(f"WAV file must be {pw.WHISPER_SAMPLE_RATE} Hz")
+
+                if sample_width != 2:
+                    raise Exception(f"WAV file must be 16-bit")
+
+                raw = wf.readframes(num_frames)
+                wf.close()
+                audio = np.frombuffer(raw, dtype=np.int16).astype(np.float32)
+                n = num_frames
+                if num_channels == 1:
+                    pcmf32 = audio / 32768.0
+                else:
+                    audio = audio.reshape(-1, 2)
+                    # Averaging the two channels
+                    pcmf32 = (audio[:, 0] + audio[:, 1]) / 65536.0
+                return pcmf32
 
         if media_file_path.endswith('.wav'):
             return wav_to_np(media_file_path)
