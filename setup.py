@@ -152,9 +152,9 @@ class CMakeBuild(build_ext):
         for key, value in os.environ.items():
             cmake_args.append(f'-D{key}={value}')
 
-        subprocess.run(
-            ["cmake", ext.sourcedir, *cmake_args], cwd=build_temp, check=True
-        )
+        # subprocess.run(
+        #     ["cmake", ext.sourcedir, *cmake_args], cwd=build_temp, check=True
+        # )
         # subprocess.run(
         #     ["cmake", "--build", ".", *build_args], cwd=build_temp, check=True
         # )
