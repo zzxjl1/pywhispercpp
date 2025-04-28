@@ -152,13 +152,7 @@ class CMakeBuild(build_ext):
         for key, value in os.environ.items():
             cmake_args.append(f'-D{key}={value}')
 
-        # subprocess.run(
-        #     ["cmake", ext.sourcedir, *cmake_args], cwd=build_temp, check=True
-        # )
-        # subprocess.run(
-        #     ["cmake", "--build", ".", *build_args], cwd=build_temp, check=True
-        # )
-        input("12")
+        input("123")
     
         # store the dll folder in a global variable to use in repairwheel
         global dll_folder
