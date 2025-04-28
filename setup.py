@@ -151,13 +151,11 @@ class CMakeBuild(build_ext):
 
         for key, value in os.environ.items():
             cmake_args.append(f'-D{key}={value}')
-
-        input("123")
     
         # store the dll folder in a global variable to use in repairwheel
         global dll_folder
         cfg = "Debug" if self.debug else "Release"
-        dll_folder = os.path.join(self.build_temp, '_pywhispercpp', 'bin', cfg)
+        dll_folder = "C:\Users\zzxjl\Desktop\ai_teleprompter\whisper.cpp\build\bin\Release"
         print("dll_folder in build_extension", dll_folder)
         #self.copy_extensions_to_source()
 
