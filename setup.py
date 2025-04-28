@@ -153,10 +153,10 @@ class CMakeBuild(build_ext):
             cmake_args.append(f'-D{key}={value}')
 
         subprocess.run(
-            [" mingw32-make", ext.sourcedir, *cmake_args], cwd=build_temp, check=True
+            ["cmake", ext.sourcedir, *cmake_args], cwd=build_temp, check=True
         )
         subprocess.run(
-            [" mingw32-make", "--build", ".", *build_args], cwd=build_temp, check=True
+            ["cmake", "--build", ".", *build_args], cwd=build_temp, check=True
         )
     
         # store the dll folder in a global variable to use in repairwheel
