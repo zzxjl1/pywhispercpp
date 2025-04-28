@@ -155,7 +155,7 @@ class CMakeBuild(build_ext):
         # store the dll folder in a global variable to use in repairwheel
         global dll_folder
         cfg = "Debug" if self.debug else "Release"
-        dll_folder = "C:\Users\zzxjl\Desktop\ai_teleprompter\whisper.cpp\build\bin\Release"
+        dll_folder = r"C:\\Users\\zzxjl\\Desktop\\ai_teleprompter\\whisper.cpp\\build\\bin\\Release"
         print("dll_folder in build_extension", dll_folder)
         #self.copy_extensions_to_source()
 
